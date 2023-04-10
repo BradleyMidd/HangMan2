@@ -1,0 +1,15 @@
+C:\Users\bradl\source\repos\HangMan2Solution\HangMan2\bin\Debug\net7.0\HangMan2.exe
+C:\Users\bradl\source\repos\HangMan2Solution\HangMan2\bin\Debug\net7.0\HangMan2.deps.json
+C:\Users\bradl\source\repos\HangMan2Solution\HangMan2\bin\Debug\net7.0\HangMan2.runtimeconfig.json
+C:\Users\bradl\source\repos\HangMan2Solution\HangMan2\bin\Debug\net7.0\HangMan2.dll
+C:\Users\bradl\source\repos\HangMan2Solution\HangMan2\bin\Debug\net7.0\HangMan2.pdb
+C:\Users\bradl\source\repos\HangMan2Solution\HangMan2\obj\Debug\net7.0\HangMan2.csproj.AssemblyReference.cache
+C:\Users\bradl\source\repos\HangMan2Solution\HangMan2\obj\Debug\net7.0\HangMan2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bradl\source\repos\HangMan2Solution\HangMan2\obj\Debug\net7.0\HangMan2.AssemblyInfoInputs.cache
+C:\Users\bradl\source\repos\HangMan2Solution\HangMan2\obj\Debug\net7.0\HangMan2.AssemblyInfo.cs
+C:\Users\bradl\source\repos\HangMan2Solution\HangMan2\obj\Debug\net7.0\HangMan2.csproj.CoreCompileInputs.cache
+C:\Users\bradl\source\repos\HangMan2Solution\HangMan2\obj\Debug\net7.0\HangMan2.dll
+C:\Users\bradl\source\repos\HangMan2Solution\HangMan2\obj\Debug\net7.0\refint\HangMan2.dll
+C:\Users\bradl\source\repos\HangMan2Solution\HangMan2\obj\Debug\net7.0\HangMan2.pdb
+C:\Users\bradl\source\repos\HangMan2Solution\HangMan2\obj\Debug\net7.0\HangMan2.genruntimeconfig.cache
+C:\Users\bradl\source\repos\HangMan2Solution\HangMan2\obj\Debug\net7.0\ref\HangMan2.dll
