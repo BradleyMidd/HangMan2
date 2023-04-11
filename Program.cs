@@ -1,29 +1,53 @@
 ﻿using System.Threading.Tasks;
+using System.IO;
 
 namespace HangMan2
 {
     internal class Program
     {
         // List of variables
-        static string? userName;
-        static string answer = "great";
+        static Player player;
+        static string answer;
         static List<string> displayWord = new List<string>();
-        static int guesses;
-        static int life = 3;
-        static int correctGuess;
-        static List<char> guessed = new List<char>();
-
 
         static void Main(string[] args)
         {
-            StartGame();
-            PlayGame();
-            EndGame();
+            try
+            {
+                StartGame();
+                PlayGame();
+                EndGame();
+
+            }
+            catch
+            {
+
+                Console.WriteLine("Something went wrong please try again");
+            }
         }
 
         private static void StartGame()
         {
-            Console.WriteLine("Starting the game...");
+
+            string[] words;
+            try
+            {
+                words = File.ReadAllLines(@"C:\Users\bradl\Desktop\MyText.txt");
+            }
+            catch
+            {
+                words = new string[] { "Apple", "Banana", "Pear" };
+            }
+
+            Random rnd = new Random();
+            answer = words[rnd.Next(words.Length)];
+            
+
+            for (int i = 0; i < answer.Length; i++)
+            {
+                displayWord.Add("-");
+            }
+
             AskForUsersName();
         }
 
@@ -33,67 +57,22 @@ namespace HangMan2
             Console.WriteLine("Input your username:");
             string inputName = Console.ReadLine();
 
-            if (inputName.Length >= 2)
-            {
-                // The user entered valid name
-                userName = inputName;
-            }
-            else
-            {
-                // The user entered invalid name
-                Console.Clear();
-                Console.WriteLine("Username must contain at least 2 characters");
-                AskForUsersName();
-            }
+            // The user entered valid name
+            player = new Player(inputName);
+
         }
 
         private static void PlayGame()
         {
-            DisplayMaskedWord(null, true);
+            DisplayMaskedWord(null);
+            AskForLetter();
         }
 
-        static void DisplayMaskedWord(string guessedLetter, bool isStartGame)
+
+        static void DisplayMaskedWord(string guessedLetter)
         {
-            string[] listOfLetters = answer.Select(x => x.ToString()).ToArray();
-            for (int i = 0; i < answer.Length; i++)
-            {
-                if (isStartGame == true)
-                {
-                    displayWord.Add("-");
-                }
-                else
-                {
-                    if (listOfLetters[i] == guessedLetter && !guessed.Contains(char.Parse(guessedLetter)))
-                    {
-                        displayWord[i] = guessedLetter;
-                        correctGuess++;
-                    }
-
-                }
-            }
-            if (isStartGame == false)
-            {
-                if (!guessed.Contains(char.Parse(guessedLetter)))
-                {
-                    guessed.Add(char.Parse(guessedLetter));
-                }
-
-
-                if (correctGuess == 0)
-                {
-                    life--;
-                }
-
-                correctGuess = 0;
-            }
-
 
             Console.WriteLine(string.Join("", displayWord));
-            if (displayWord.Contains("-") && life > 0)
-            {
-                AskForLetter();
-            }
-
 
         }
         static void AskForLetter()
@@ -102,20 +81,64 @@ namespace HangMan2
             do
             {
                 Console.WriteLine("Enter a letter!");
-                Console.WriteLine($"Life: {life}");
-                Console.WriteLine($"Guessed letters: {String.Join(", ", guessed)}");
+                Console.WriteLine($"Life: {player.Life}");
+                Console.WriteLine($"Guessed letters: {String.Join(", ", player.Guessed)}");
                 guessedLetter = Console.ReadLine();
                 Console.Clear();
 
-            } while (guessedLetter.Length != 1 && guessed.Contains(char.Parse(guessedLetter)));
+            } while (guessedLetter.Length != 1);
 
-            guesses++;
-            DisplayMaskedWord(guessedLetter, false);
+            if (!player.Guessed.Contains(char.Parse(guessedLetter)))
+            {
+                player.Guessed.Add(char.Parse(guessedLetter));
+                player.guesses++;
+                CheckLetter(guessedLetter);
+            }
+            else 
+            {
+                Console.WriteLine("That letter is already guessed");
+                PlayGame();
+            }
+
         }
+        static void CheckLetter(string guessedLetter)
+        {
+            
+            string[] listOfLetters = answer.Select(x => x.ToString()).ToArray();
+            for (int i = 0; i < answer.Length; i++)
+            {
+                if (listOfLetters[i].ToLower() == guessedLetter.ToLower())
+                {
+                    displayWord[i] = listOfLetters[i];
+                    player.CorrectGuess = true;
+
+                }
+
+            }
+
+
+            if (!player.CorrectGuess)
+            {
+                player.Life--;
+            }
+            else 
+            {
+                player.Score++;
+            }
+
+            player.CorrectGuess = false;
+
+            if (displayWord.Contains("-") && player.Life > 0)
+            {
+                PlayGame();
+            }
+        }
+
 
         private static void EndGame()
         {
-            if (life == 0 && displayWord.Contains("-"))
+            Console.Clear();
+            if (player.Life == 0 && displayWord.Contains("-"))
             {
                 Console.WriteLine($"You lose...");
                 Console.WriteLine($"The correct word was: {answer}");
@@ -125,9 +148,12 @@ namespace HangMan2
             {
                 Console.WriteLine($"You win...");
                 Console.WriteLine($"The correct word was: {answer}");
+
             }
-            Console.WriteLine($"Game over. Thank you for playing {userName}");
-            Console.WriteLine($"Total guessed letters: {guesses}");
+            Console.WriteLine($"Game over. Thank you for playing {player.Name}");
+            Console.WriteLine($"Total correct guessed letters: {player.Score}");
+            Console.WriteLine($"Total guessed letters: {player.guesses}");
+
 
         }
     }
